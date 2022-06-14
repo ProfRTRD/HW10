@@ -23,10 +23,13 @@ template <class deriv_t, class system_t, class printer_t>
 void integrate_huell(deriv_t deriv, system_t & y, double tinit, double tend, double dt, printer_t writer);
 
 
-int main(void)
+int main(int argc, char *argv[])
 {
+  double rho = std::atof(argv[1]);
+  double tinit = std::atof(argv[2]);
+  double tend = std::atof(argv[3]);
   functor_E fderiv;
-  fderiv.W = 3.1237;
+  fderiv.W = std::atof(argv[4]);
   double DT = 0.001;
   double TF = 4*2*M_PI/fderiv.W;
   int N = 2;
@@ -71,14 +74,17 @@ void integrate_euler(deriv_t deriv, system_t & y, double tinit, double tend, dou
 	print(y, time);
   }
 }
-/*template <class deriv_t, class system_t, class printer_t>
-void integrate_euler(deriv_t deriv, system_t & y, double tinit, double tend, double dt, printer_t writer){
+template <class deriv_t, class system_t, class printer_t>
+void integrate_huell(deriv_t deriv, system_t & y, double tinit, double tend, double dt, printer_t writer){
    int N = y.size();
   system_t dydt(N, 0.0);
   double time = 0;
+  std::valarray<double> k1;
+  std::valarray<double> k2;
   int nsteps = (tend - tinit)/dt;
   for(int ii = 0; ii < nsteps; ++ii) {
 	time = tinit + ii*dt;
     deriv(y, dydt, time);
-    for (int ii = 0; ii < N; ++ii) {
-*/
+    k1 = dydt*dt;
+  }
+}
